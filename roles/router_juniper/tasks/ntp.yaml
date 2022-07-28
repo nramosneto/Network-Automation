@@ -1,0 +1,8 @@
+---
+- name: DEFAULT NTP CONFIGURATION
+  junipernetworks.junos.junos_ntp_global:
+          config:
+            servers:
+              - server: 193.4.58.44
+              - server: 193.4.58.77
+          state: replaced

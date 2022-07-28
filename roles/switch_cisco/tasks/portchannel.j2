@@ -1,0 +1,13 @@
+{% for key,value in portchannel|dictsort -%}
+interface {{ key }}
+ {% if value.description is defined %}
+ description {{ value.description }}
+ {% endif %}
+{% endfor %}
+{% for key,value in portchannel|dictsort if value.ports is defined -%}
+{% for ports in value.ports %}
+interface {{ ports }}
+ no shutdown
+ channel-group {{ key|replace('Po', '') }} mode {{ value.channelmode }}
+{% endfor %}
+{% endfor %}

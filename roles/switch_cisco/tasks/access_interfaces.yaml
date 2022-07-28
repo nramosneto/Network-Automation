@@ -1,0 +1,13 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+# INTERFACES L2 - ACCESS
+- name: L2 INTERFACES CONFIG
+  cisco.ios.ios_l2_interfaces:
+    config:
+    - name: "{{ item.switch_if }}"
+      mode: access
+      access:
+        vlan: "{{ item.vlan_id }}"
+    state: replaced
+  when: item.vlan_id is defined
+  loop: "{{ interfaces }}"

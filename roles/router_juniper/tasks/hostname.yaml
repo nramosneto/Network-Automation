@@ -1,0 +1,4 @@
+---
+- name: DEVICE HOSTNAME STANDARDS
+  junipernetworks.junos.junos_system:
+          hostname: "{{ hostname }}"

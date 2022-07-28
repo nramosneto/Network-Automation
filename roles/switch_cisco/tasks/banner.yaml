@@ -1,0 +1,7 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+- name: CONFIGURE SECURITY BANNER
+  cisco.ios.ios_banner:
+    banner: login
+    text: "{{ lookup('file', 'config_files/banner.cfg') }}"
+    state: present

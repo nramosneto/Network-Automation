@@ -1,0 +1,9 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+- name: DEFAULT NTP CONFIGURATION
+  cisco.ios.ios_ntp_global:
+          config:
+            servers:
+              - server: 193.4.58.44
+              - server: 193.4.58.77
+          state: replaced

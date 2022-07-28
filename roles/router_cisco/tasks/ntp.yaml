@@ -1,0 +1,11 @@
+---
+- name: DEFAULT NTP CONFIGURATION
+  cisco.ios.ios_ntp_global:
+          config:
+            access_group:
+              serve:
+                - access_list: NTP-limit
+            servers:
+              - server: 193.4.58.44
+              - server: 193.4.58.77
+          state: replaced

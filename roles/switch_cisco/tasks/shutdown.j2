@@ -1,0 +1,9 @@
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+{% for key,value in interfaces|dictsort -%}
+interface {{ key }}
+ {% if value.enabled == true -%}
+ no shutdown
+ {% elif value.enabled == false -%}
+ shutdown
+ {% endif -%}
+{% endfor %}

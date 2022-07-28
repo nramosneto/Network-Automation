@@ -1,0 +1,43 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+# Palo Alto - Firewall Services Standard
+- name: Add Firewall Services - TCP 443
+  paloaltonetworks.panos.panos_service_object:
+    provider: '{{ palo_provider }}'
+    name: 'tcp-443-ssl'
+    protocol: 'tcp'
+    destination_port: '443'
+    description: 'Service 443 web'
+    state: 'present'
+- name: Add Firewall Services - TCP 80
+  paloaltonetworks.panos.panos_service_object:
+    provider: '{{ palo_provider }}'
+    name: 'tcp-80-web'
+    protocol: 'tcp'
+    destination_port: '80'
+    description: 'Service 80 web'
+    state: 'present'
+- name: Add Firewall Services - TCP 5108-5109
+  paloaltonetworks.panos.panos_service_object:
+    provider: '{{ palo_provider }}'
+    name: 'tcp-5108-5109'
+    protocol: 'tcp'
+    destination_port: '5108-5109'
+    description: 'Service 5108'
+    state: 'present'
+- name: Add Firewall Services - TCP 8004
+  paloaltonetworks.panos.panos_service_object:
+    provider: '{{ palo_provider }}'
+    name: 'tcp-8004'
+    protocol: 'tcp'
+    destination_port: '8004'
+    description: 'Service 8004'
+    state: 'present'
+- name: Add Firewall Services - TCP RANGE 8052 - 8095
+  paloaltonetworks.panos.panos_service_object:
+    provider: '{{ palo_provider }}'
+    name: 'tcp-8052-8095'
+    protocol: 'tcp'
+    destination_port: '8052-8095'
+    description: 'Service 8052'
+    state: 'present'

@@ -1,0 +1,4 @@
+#----------------------COMMIT ALL SETTINGS----------------------#
+- name: Commit firewall changes
+  paloaltonetworks.panos.panos_commit:
+    provider: '{{ palo_provider }}'

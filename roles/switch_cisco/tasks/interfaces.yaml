@@ -1,0 +1,50 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+
+# INTERFACES L2 - ACCESS
+- name: L2 INTERFACES CONFIG
+  cisco.ios.ios_l2_interfaces:
+    config:
+    - name: "{{ item.switch_if }}"
+      mode: access
+      access:
+        vlan: "{{ item.vlan_id }}"
+    state: replaced
+  when: item.vlan_id is defined
+  loop: "{{ interfaces }}"
+
+# INTERFACES L2 - TRUNK WITH ALLOWED
+- name: L2 INTERFACES CONFIG - TRUNK ALLOWED VLANS
+  cisco.ios.ios_l2_interfaces:
+    config:
+    - name: "{{ item.switch_if }}"
+      mode: trunk
+      trunk:
+        allowed_vlans: "{{ item.allowedvlans }}"
+        native_vlan: "{{ item.nativevlan }}"
+    state: replaced
+  when: item.allowedvlan is defined
+  loop: "{{ interfaces }}"
+
+# INTERFACES L2 - TRUNK
+- name: L2 INTERFACES CONFIG - TRUNK-ONLY
+  cisco.ios.ios_l2_interfaces:
+    config:
+    - name: "{{ item.switch_if }}"
+      mode: trunk
+    state: replaced
+  when: item.trunk_only is defined
+  loop: "{{ interfaces }}"
+
+# INTERFACES HOUSEKEEPING
+- name: HOUSEKEEPING
+  cisco.ios.ios_l2_interfaces:
+    config:
+    - name: "{{ item.switch_if }}"
+    state: deleted
+  when: item.clearint is defined
+  loop: "{{ interfaces }}"
+
+#- name: Configure sub-interfaces first
+#  ios_config:
+#    src: interfaces.j2

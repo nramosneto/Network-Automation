@@ -1,0 +1,16 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+- hosts: cisco
+  gather_facts: no
+  tasks:
+    - name: SHOW RUNNING CONFIG
+      block:
+      - name: GET RUNNING CONFIG
+        ios_command:
+          commands:
+                  - show running-config
+        register: config
+    - name: SAVE CONFIG
+      copy:
+        content: "{{config.stdout[0] }}"
+        dest: "running-config/backup/{{ inventory_hostname }}.txt"

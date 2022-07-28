@@ -1,0 +1,2 @@
+---
+- import_playbook: cisco-wan-routers.yaml

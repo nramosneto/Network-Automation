@@ -1,0 +1,26 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+# Palo Alto - CREATE VLAN INTERFACE
+- name: Create Palo Alto Vlan Interface
+  paloaltonetworks.panos.panos_vlan_interface:
+    provider: '{{ palo_provider }}'
+    name: '{{ item.vlan_interface_name }}'
+    zone_name: '{{ item.vlan_interface_zone }}'
+    ip: '{{ item.vlan_ip }}'
+    management_profile: '{{ item.vlan_management_profile }}'
+    enable_dhcp: '{{ item.vlan_dhcp }}'
+    vr_name: '{{ item.vlan_vr }}'
+    state: '{{ item.vlan_interface_state }}'
+  when: item.vlan_interface_name is defined
+  loop: "{{ firewall_vlan_interface }}"
+
+# Palo Alto - VLANS
+- name: Create Palo Alto Vlan & Assign interface
+  paloaltonetworks.panos.panos_vlan:
+    provider: '{{ palo_provider }}'
+    name: "{{ item.vlan_name }}"
+    virtual_interface: "{{ item.vlan_interface }}"
+    state: "{{ item.vlan_state }}"
+  when: item.vlan_name is defined
+  loop: "{{ firewall_vlan }}"
+

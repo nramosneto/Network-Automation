@@ -1,0 +1,13 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+#- import_tasks: logging.yaml
+#- import_tasks: interfaces.yaml
+
+- import_tasks: hostname.yaml
+- import_tasks: ntp.yaml
+- import_tasks: banner.yaml
+- import_tasks: vlans.yaml
+- import_tasks: access_interfaces.yaml
+- import_tasks: l2_trunk.yaml
+- import_tasks: l3_interfaces.yaml
+- import_tasks: portchannel.yaml

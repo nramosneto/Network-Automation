@@ -1,0 +1,8 @@
+---
+- hosts: uk-man-ofc-fw-01
+  gather_facts: no
+  connection: local
+  collections:
+    - paloaltonetworks.panos
+  roles:
+    - firewall_manchester

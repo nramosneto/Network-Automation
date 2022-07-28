@@ -1,0 +1,5 @@
+---
+- import_tasks: hostname.yaml
+- import_tasks: logging.yaml
+- import_tasks: ntp.yaml
+- import_tasks: banner.yaml

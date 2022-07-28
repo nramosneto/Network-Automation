@@ -1,0 +1,12 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+# VLANS DATABASE
+- name: CREATE VLANS
+  cisco.ios.ios_vlans:
+    config:
+    - name: "{{ item.vlan_name }}"
+      vlan_id: "{{ item.vlan_id }}"
+      state: active
+      shutdown: disabled
+  when: item.vlan_name is defined
+  loop: "{{ vlans }}"

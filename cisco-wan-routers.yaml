@@ -1,0 +1,5 @@
+---
+- hosts: cisco
+  gather_facts: yes
+  roles:
+    - cisco_routers_standard

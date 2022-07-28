@@ -1,0 +1,26 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+
+# Palo Alto - Objects
+- name: Create firewall object
+  paloaltonetworks.panos.panos_address_object:
+    provider: '{{ palo_provider }}'
+    name: "{{ item.object_name }}"
+    address_type: "{{ item.object_address_type }}"
+    value: "{{ item.object_address }}"
+    description: "{{ item.object_description }}"
+    state: "{{ item.object_state }}"
+  when: item.object_name is defined
+  loop: "{{ firewall_objects }}"
+
+# Palo Alto - Objects Groups
+- name: Create firewall object
+  paloaltonetworks.panos.panos_address_group:
+    provider: '{{ palo_provider }}'
+    name: "{{ item.object_group_name }}"
+    static_value: "{{ item.object_group_address }}"
+    description: "{{ item.object_group_description }}"
+    state: "{{ item.object_group_state }}"
+  when: item.object_group_name is defined
+  loop: "{{ firewall_objects_groups }}"
+

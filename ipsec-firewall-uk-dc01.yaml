@@ -1,0 +1,8 @@
+---
+- hosts: uk-dc-fw-dmz-01
+  gather_facts: no
+  connection: local
+  collections:
+    - paloaltonetworks.panos
+  roles:
+    - paloalto_firewall_ipsec_uk

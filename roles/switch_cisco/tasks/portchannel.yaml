@@ -1,0 +1,7 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+# EtherChannel Configuration
+- name: CONFIGURE PORTCHANNEL INTERFACES
+  ios_config:
+    src: portchannel.j2
+  tags: portchannel

@@ -1,0 +1,5 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+- name: DEVICE HOSTNAME STANDARDS
+  cisco.ios.ios_system:
+          hostname: "{{ hostname }}"

@@ -1,0 +1,2 @@
+---
+- import_playbook: juniper-wan-routers.yaml

@@ -1,0 +1,5 @@
+---
+- hosts: juniper
+  gather_facts: no
+  roles:
+    - juniper_routers_standard

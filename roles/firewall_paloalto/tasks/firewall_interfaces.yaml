@@ -1,0 +1,44 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+# Palo Alto - Interfaces
+- name: Configure Palo Alto Interfaces
+  paloaltonetworks.panos.panos_interface:
+    provider: '{{ palo_provider }}'
+    if_name: "{{ item.interface_name }}"
+    mode: "{{ item.interface_mode }}"
+    ip: "{{ item.interface_ip|default(omit) }}"
+    enable_dhcp: "{{ item.interface_dhcp|default(omit) }}"
+    zone_name: "{{ item.interface_zone|default(omit) }}"
+    vr_name: "{{ item.interface_vr|default(omit) }}"
+    state: "{{ item.interface_state|default(omit) }}"
+  when: item.interface_name is defined
+  loop: "{{ firewall_interfaces }}"
+
+# Palo Alto - Sub Interfaces
+- name: Configure Palo Alto Sub-Interfaces
+  paloaltonetworks.panos.panos_l3_subinterface:
+    provider: '{{ palo_provider }}'
+    name: "{{ item.subinterface_name|default(omit)  }}"
+    tag: "{{ item.subinterface_tag }}"
+    ip: "{{ item.subinterface_ip|default(omit)  }}"
+    enable_dhcp: "{{ item.subinterface_dhcp|default(omit) }}"
+    management_profile: "{{ item.subint_profile|default(omit) }}"
+    zone_name: "{{ item.subinterface_zone|default(omit) }}"
+    vr_name: "{{ item.subinterface_vr|default(omit)  }}"
+    state: "{{ item.subinterface_state|default(omit)  }}"
+  when: item.subinterface_name is defined
+  loop: "{{ firewall_subinterfaces }}"
+
+# Palo Alto - loopback
+- name: Configure Palo Alto loopback
+  paloaltonetworks.panos.panos_loopback_interface:
+    provider: '{{ palo_provider }}'
+    if_name: "{{ item.loopback_int }}"
+    ip: "{{ item.loopback_ip }}"
+    zone_name: "{{ item.loopback_zone }}"
+    vr_name: "{{ item.loopback_vr }}"
+    comment: "{{ item.loopback_comment }}"
+    management_profile: "{{ item.loopback_profile }}"
+    state: "{{ item.loopback_state }}"
+  when: item.loopback_int is defined
+  loop: "{{ firewall_loopback }}"

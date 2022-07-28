@@ -1,0 +1,5 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+- name: SYSLOG SERVERS
+  cisco.ios.ios_logging_global:
+          state: gathered

@@ -1,0 +1,14 @@
+{% for key,value in interfaces|dictsort -%}
+interface {{ key }}
+ {% if value.description is defined %}
+ description {{ value.description }}
+ {% endif %}
+ {% if value.routed is defined -%}
+ no switchport
+ {% endif -%}
+ {% if value.enabled == true -%}
+ no shutdown
+ {% elif value.enabled == false -%}
+ shutdown
+ {% endif -%}
+{% endfor %}

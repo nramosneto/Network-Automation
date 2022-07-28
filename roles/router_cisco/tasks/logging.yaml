@@ -1,0 +1,4 @@
+---
+- name: SYSLOG SERVERS
+  cisco.ios.ios_logging_global:
+          state: gathered

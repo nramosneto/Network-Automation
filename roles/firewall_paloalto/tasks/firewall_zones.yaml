@@ -1,0 +1,15 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+
+# Palo Alto - ZONES
+- name: Create Palo Alto Zones
+  paloaltonetworks.panos.panos_zone:
+    provider: '{{ palo_provider }}'
+    zone: "{{ item.zone_name }}"
+    mode: "{{ item.zone_mode }}"
+    zone_profile: "{{ item.zone_profile|default(omit) }}"
+    interface: "{{ item.zone_interface|default(omit) }}"
+    state: "{{ item.zone_state }}"
+  when: item.zone_name is defined
+  loop: "{{ firewall_zones }}"
+

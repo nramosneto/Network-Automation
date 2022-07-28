@@ -1,0 +1,5 @@
+---
+- hosts: uk-dc-sw-acc-01
+  gather_facts: yes
+  roles:
+    - cisco_switch_standard

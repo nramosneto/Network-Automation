@@ -1,0 +1,8 @@
+---
+- hosts: is-kal-dc-fw-01
+  gather_facts: no
+  connection: local
+  collections:
+    - paloaltonetworks.panos
+  roles:
+    - palo_alto_firewall_rules

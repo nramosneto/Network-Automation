@@ -1,0 +1,14 @@
+---
+- import_tasks: firewall_interfaces.yaml
+- import_tasks: firewall_zones.yaml
+- import_tasks: firewall_ike_ipsec_default_profile.yaml
+- import_tasks: firewall_ipsec.yaml
+- import_tasks: firewall_static_route.yaml
+- import_tasks: firewall_itens_groups.yaml
+- import_tasks: firewall_rules.yaml
+  tags: firewall-rules
+- import_tasks: firewall_nat.yaml
+  tags: firewall-nat
+#- import_tasks: firewall_services.yaml
+- import_tasks: firewall_commit.yaml
+  tags: firewall-commit

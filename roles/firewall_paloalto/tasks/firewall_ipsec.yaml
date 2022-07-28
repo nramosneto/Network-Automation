@@ -1,0 +1,58 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+# Palo Alto - IPSEC
+## Configure IKE gateway - PHASE 1
+- name: Configure IKE gateway
+  paloaltonetworks.panos.panos_ike_gateway:
+      provider: '{{ palo_provider }}'
+      name: "{{ item.ike_gateway_name }}"
+      version: "{{ item.ike_gateway_version }}"
+      interface: "{{ item.ike_gateway_interface }}"
+      local_ip_address_type: "{{ item.ike_gateway_localaddress_type }}"
+      local_ip_address: "{{ item.ike_gateway_localip }}"
+      enable_passive_mode: "{{ item.ike_gateway_passive }}"
+      liveness_check_interval: "{{ item.ike_gateway_liveness|default(omit) }}"
+      peer_ip_value: "{{ item.ike_gateway_peer_ip }}"
+      pre_shared_key: "{{ item.ike_gateway_psk }}"
+      ikev2_crypto_profile: "{{ item.ike_gateway_crypto_profile }}"
+      state: "{{ item.ike_gateway_state }}"
+  when: item.ike_gateway_name is defined
+  loop: "{{ ike_gateway }}"
+
+## Configure tunnel interface
+- name: Create tunnel interfaces
+  paloaltonetworks.panos.panos_tunnel:
+      provider: '{{ palo_provider }}'
+      if_name: "{{ item.tunnel_name }}"
+      ip: "{{ item.tunnel_ip|default(omit) }}"
+      zone_name: "{{ item.tunnel_zone }}"
+      vr_name: "{{ item.tunnel_vr|default(omit) }}"
+      state: "{{ item.tunnel_state }}"
+  when: item.tunnel_name is defined
+  loop: "{{ vpn_tunnel }}"
+
+## Configure IPSec Tunnel - Phase 2
+- name: Create IPsec Phase 2
+  paloaltonetworks.panos.panos_ipsec_tunnel:
+        provider: '{{ palo_provider }}'
+        name: "{{ item.ipsec_name }}"
+        tunnel_interface: "{{ item.tunnel_interface }}"
+        ike_gtw_name: "{{ item.ipsec_ike_gw }}"
+        ipsec_profile: "{{ item.ipsec_profile }}"
+        enable_tunnel_monitor: "{{ item.ipsec_monitor|default(omit) }}"
+        tunnel_monitor_dest_ip: "{{ item.ipsec_monitor_dst|default(omit) }}"
+        tunnel_monitor_profile: "{{ item.ipsec_monitor_profile|default(default) }}"
+        state: "{{ item.ipsec_state }}"
+  when: item.ipsec_name is defined
+  loop: "{{ ipsec_vpn }}"
+
+## Configure IPsec Proxy-IDs
+- name: Add IPSec IPv4 Proxy ID
+  paloaltonetworks.panos.panos_ipsec_ipv4_proxyid:
+    provider: '{{ palo_provider }}'
+    name: "{{ item.vpn_proxy }}"
+    tunnel_name: "{{ item.ipsec_tunnel_name }}"
+    local: "{{ item.vpn_proxy_local }}"
+    remote: "{{ item.vpn_proxy_remote }}"
+  when: item.vpn_proxy is defined
+  loop: "{{ ipsec_proxy_id }}"

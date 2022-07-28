@@ -1,0 +1,22 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+
+- name: Add IKE crypto default SaltPay config to the firewall
+  paloaltonetworks.panos.panos_ike_crypto_profile:
+    provider: '{{ palo_provider }}'
+    state: 'present'
+    name: 'saltpay-default-ike'
+    dh_group: ['group20']
+    authentication: ['sha512']
+    encryption: ['aes-256-cbc']
+    lifetime_hours: '24'
+
+- name: Add IPSec crypto default SaltPay config to the firewall
+  paloaltonetworks.panos.panos_ipsec_profile:
+    provider: '{{ palo_provider }}'
+    state: 'present'
+    name: 'saltpay-default-ipsec'
+    esp_authentication: ['sha512']
+    esp_encryption: ['aes-256-cbc']
+    dh_group: 'group20'
+    lifetime_seconds: '3600'

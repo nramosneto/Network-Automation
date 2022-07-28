@@ -1,0 +1,4 @@
+---
+- name: SYSLOG SERVERS
+  junipernetworks.junos.junos_logging_global:
+          state: gathered

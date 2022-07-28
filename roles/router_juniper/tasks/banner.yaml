@@ -1,0 +1,6 @@
+---
+- name: CONFIGURE SECURITY BANNER - JUNOS
+  junipernetworks.junos.junos_banner:
+    banner: login
+    text: "{{ lookup('file', '/etc/ansible/network-automation/config_files/banner.cfg') }}"
+    state: present

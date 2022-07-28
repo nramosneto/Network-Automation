@@ -1,0 +1,18 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+# Palo Alto - Interfaces
+- name: Configure Palo Alto Static Route
+  paloaltonetworks.panos.panos_static_route:
+    provider: '{{ palo_provider }}'
+    name: "{{ item.static_route_name|default(omit) }}"
+    destination: "{{ item.static_route_destination|default(omit) }}"
+    nexthop_type: "{{ item.static_route_nexthop_type|default(omit) }}"
+    nexthop: "{{ item.static_route_nexthop_ip|default(omit) }}"
+    interface: "{{ item.static_route_interface|default(omit) }}"
+    virtual_router: "{{ item.static_route_vr|default(omit) }}"
+    metric: "{{ item.static_route_metric|default(omit) }}"
+    state: "{{ item.static_route_state|default(omit) }}"
+  when: item.static_route_name is defined
+  loop: "{{ firewall_static_routes}}"
+
+

@@ -1,0 +1,12 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+# INTERFACES ROUTED - ACCESS
+- name: CONFIGURE L3 (ROUTED INTERFACES)
+  ios_l3_interfaces:
+    config:
+      - name: "{{ item.l3interface }}"
+        ipv4:
+          - address: "{{ item.ipv4_address }}"
+    state: replaced
+  when: item.ipv4_address is defined
+  loop: "{{ routed_interfaces }}"

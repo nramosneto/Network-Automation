@@ -1,0 +1,20 @@
+---
+# WRITTEN BY NIVALDO RAMOS NETO - Sr. Network Engineer
+# Palo Alto - Firewall NAT
+- name: Configure Source-NAT with address
+  paloaltonetworks.panos.panos_nat_rule:
+    provider: '{{ palo_provider }}'
+    rule_name: "{{ item.snat_name }}"
+    description: "{{ item.snat_description|default(omit) }}"
+    source_zone: "{{ item.snat_src_zone }}"
+    destination_zone: "{{ item.snat_dst_zone }}"
+    source_ip: "{{ item.snat_src_ip|default(any) }}"
+    destination_ip: "{{ item.snat_dst_ip|default(any) }}"
+    #service: "{{ item.snat_service|default(omit) }}"
+    to_interface: "{{ item.snat_to_interface|default(omit) }}"
+    snat_type: "{{ item.src_snat_type|default(omit) }}"
+    snat_interface: "{{ item.src_snat_interface|default(omit) }}"
+    snat_address_type: "{{ item.src_snat_address_type }}"
+    snat_interface_address: "{{ item.src_snat_int_ip }}"
+  when: item.snat_name is defined
+  loop: "{{ firewall_snat }}"

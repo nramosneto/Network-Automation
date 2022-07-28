@@ -1,0 +1,4 @@
+---
+- name: DEVICE HOSTNAME STANDARDS
+  cisco.ios.ios_system:
+          hostname: "{{ inventory_hostname }}"
