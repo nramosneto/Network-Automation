@@ -1,0 +1,6 @@
+---
+hostname: uk-dc-fw-dmz-01
+ip_address: '100.64.50.1'
+api_key: LUFRPT1qUnFVMmpERklQOUFlWDRHbVlScklDTjJtdEk9Rldxek05OHh6WHBqZFoyVXNFVGs0dlRiRDBKY29mcDYyZFRHQmhpV040QkJPbEErWWRwVVA1WGRqblRtcnpvNVJBT0REbjl2dmpBeXFIbzNSMnFGdUE9PQ==
+
+#----------------------This section configures Firewall OBJECTS

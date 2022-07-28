@@ -1,0 +1,206 @@
+---
+hostname: is-kal-dc-fw-01
+ip_address: '192.168.255.10'
+api_key: LUFRPT1PclZEcXlIK3dBNkVidFIxaXkxTjhCTEVvYnM9Rldxek05OHh6WHBqZFoyVXNFVGs0dlRiRDBKY29mcDYyZFRHQmhpV040Q0FYTjN3dklzV0RnMnArbnVGeUNHam93YTJ3UFBPM3RNV0dsb0pYY2svNFE9PQ==
+
+#----------------------This section configures Firewall OBJECTS
+
+#START SALTIT-12577
+firewall_objects:
+- object_name: 'AWS-Prefix-10.142.0.0-20'
+  object_address_type: 'ip-netmask'
+  object_address: '10.142.0.0/20'
+  object_description: 'Address range for AWS POD'
+  object_state: 'present'
+
+- object_name: 'AWS-Prefix-10.142.16.0-20'
+  object_address_type: 'ip-netmask'
+  object_address: '10.142.16.0/20'
+  object_description: 'Address range for AWS POD'
+  object_state: 'present'
+
+- object_name: 'AWS-Prefix-10.142.32.0-20'
+  object_address_type: 'ip-netmask'
+  object_address: '10.142.32.0/20'
+  object_description: 'Address range for AWS POD'
+  object_state: 'present'
+#END SALTIT-12577
+
+#START SALTIT-13852
+- object_name: 'VPN-GLOBAL-PROTECT'
+  object_address_type: 'ip-netmask'
+  object_address: '172.17.0.0/22'
+  object_description: 'Address range VPN Pool'
+  object_state: 'present'
+
+- object_name: 'AWS-platform-dev-lb-private-1'
+  object_address_type: 'ip-netmask'
+  object_address: '10.129.61.0/24'
+  object_description: 'platform-dev-lb-private-1'
+  object_state: 'present'
+
+- object_name: 'AWS-platform-dev-lb-private-2'
+  object_address_type: 'ip-netmask'
+  object_address: '10.129.62.0/24'
+  object_description: 'platform-dev-lb-private-2'
+  object_state: 'present'
+
+- object_name: 'AWS-platform-dev-lb-private-3'
+  object_address_type: 'ip-netmask'
+  object_address: '10.129.63.0/24'
+  object_description: 'platform-dev-lb-private-3'
+  object_state: 'present'
+
+- object_name: 'AWS-platform-prd-lb-private-1'
+  object_address_type: 'ip-netmask'
+  object_address: '10.141.61.0/24'
+  object_description: 'platform-prd-lb-private-1'
+  object_state: 'present'
+
+- object_name: 'AWS-platform-prd-lb-private-2'
+  object_address_type: 'ip-netmask'
+  object_address: '10.141.62.0/24'
+  object_description: 'platform-prd-lb-private-2'
+  object_state: 'present'
+
+- object_name: 'AWS-platform-prd-lb-private-3'
+  object_address_type: 'ip-netmask'
+  object_address: '10.141.63.0/24'
+  object_description: 'platform-prd-lb-private-3'
+  object_state: 'present'
+
+#END SALTIT-13852
+
+#START SALTIT-14355 MTA-POSTFIX
+- object_name: 'Postfix-1'
+  object_address_type: 'ip-netmask'
+  object_address: '172.25.124.222'
+  object_description: 'Postfix MTA'
+  object_state: 'present'
+
+- object_name: 'Postfix-2'
+  object_address_type: 'ip-netmask'
+  object_address: '172.25.124.223'
+  object_description: 'Postfix MTA'
+  object_state: 'present'
+
+#START SALTIT-14355 MTA-POSTFIX
+
+#----------------------This section configures Firewall OBJECT GROUPS
+firewall_objects_groups:
+
+#START SALTIT-12577
+- object_group_name: 'AWS-10.142.0.0-Group'
+  object_group_address: ['AWS-Prefix-10.142.0.0-20','AWS-Prefix-10.142.16.0-20','AWS-Prefix-10.142.32.0-20']
+  object_group_description: 'AWS 10.142.0.0 Group of objects'
+  object_group_state: 'present'
+#END SALTIT-12577
+
+#START SALTIT-13852
+- object_group_name: 'AWS-platform-dev-10.129.61-63'
+  object_group_address: ['AWS-platform-dev-lb-private-1','AWS-platform-dev-lb-private-2','AWS-platform-dev-lb-private-3']
+  object_group_description: 'AWS-platform-dev-lb-private-1-2-3'
+  object_group_state: 'present'
+
+- object_group_name: 'AWS-platform-prod-10.141.61-63'
+  object_group_address: ['AWS-platform-prd-lb-private-1','AWS-platform-prd-lb-private-2','AWS-platform-prd-lb-private-3']
+  object_group_description: 'AWS-platform-prd-lb-private-1-2-3'
+  object_group_state: 'present'
+#END SALTIT-13852
+#----------------------This section configures Firewall Rules
+firewall_rules:
+  #START SALTIT-12577
+- rule_name: 'SALTIT-12577-pagaqui-aws-prod-in'
+  rule_description: 'Pagaqui servers access to AWS Environment'
+  source_zone: ['VPN-L2L']
+  destination_zone: ['Internet']
+  source_ip: ['192.168.45.192']
+  source_user: ['any']
+  destination_ip: ['AWS-10.142.0.0-Group']
+  category_name: ['any']
+  application_name: ['mysql']
+  service_name: ['any']
+  log_start: 'false'
+  log_end: 'true'
+  rule_action: 'allow'
+  rule_state: 'present'
+
+- rule_name: 'SALTIT-12577-pagaqui-aws-prod-out'
+  rule_description: 'AWS Environment access to Pagaqui servers'
+  source_zone: ['Internet']
+  destination_zone: ['VPN-L2L']
+  source_ip: ['AWS-10.142.0.0-Group']
+  source_user: ['any']
+  destination_ip: ['192.168.45.192']
+  category_name: ['any']
+  application_name: ['mysql']
+  service_name: ['any']
+  log_start: 'false'
+  log_end: 'true'
+  rule_action: 'allow'
+  rule_state: 'present'
+#END SALTIT-12577
+
+#START SALTIT-13852
+- rule_name: 'SALTIT-13852-way4-dev-vpn-users-access'
+  rule_description: 'Access From VPN pool to W4 Environment DEV AND PROD'
+  source_zone: ['VPN-Clients']
+  destination_zone: ['VPN-L2L']
+  source_ip: ['VPN-GLOBAL-PROTECT']
+  source_user: ['any']
+  destination_ip: ['AWS-platform-dev-10.129.61-63','AWS-platform-prod-10.141.61-63']
+  category_name: ['any']
+  application_name: ['any']
+  service_name: ['service-http','service-https']
+  log_start: 'false'
+  log_end: 'true'
+  rule_action: 'allow'
+  rule_state: 'present'
+#END SALTIT-13852
+
+#START SALTIT-11674
+- rule_name: 'SALTIT-11674-pagaqui-api-aws'
+  rule_description: 'Access From Pagaqui Claranet Lisbon Environment to AWS DEV AND PROD'
+  source_zone: ['VPN-L2L']
+  destination_zone: ['VPN-L2L']
+  source_ip: ['192.168.45.133','192.168.45.192','192.168.45.134']
+  source_user: ['any']
+  destination_ip: ['AWS-platform-dev-10.129.61-63','AWS-platform-prod-10.141.61-63']
+  category_name: ['any']
+  application_name: ['any']
+  service_name: ['tcp-443-ssl','tcp-80-web','tcp-5108-5109','tcp-8004','tcp-8052-8095']
+  log_start: 'false'
+  log_end: 'true'
+  rule_action: 'allow'
+  rule_state: 'present'
+#END SALTIT-11674
+
+#START SALTIT-14355 MTA-POSTFIX
+- rule_name: 'SALTIT-14355-mta-postfix'
+  rule_description: 'https://saltpayco.atlassian.net/browse/SALTIT-14355'
+  source_zone: ['Servers']
+  destination_zone: ['Internet']
+  source_ip: ['Postfix-1','Postfix-2']
+  source_user: ['any']
+  destination_ip: ['any']
+  category_name: ['any']
+  application_name: ['any']
+  service_name: ['SMTP-25','udp-123']
+  log_start: 'false'
+  log_end: 'true'
+  rule_action: 'allow'
+  rule_state: 'present'
+#END SALTIT-14355 MTA-POSTFIX
+
+
+firewall_snat_static:
+- snat_name: 'SALTIT-14355-mta-postfix-NAT'
+  snat_description: 'https://saltpayco.atlassian.net/browse/SALTIT-14355'
+  snat_src_zone: 'Servers'
+  snat_dst_zone: 'Internet'
+  snat_src_ip: ['Postfix-1','Postfix-2']
+  snat_dst_ip: ['any']
+  snat_to_interface: 'ethernet1/6.308'
+  src_snat_type: 'dynamic-ip-and-port'
+  src_snat_address_type: 'translated-address'
+  src_snat_dynamic_address: ['185.107.60.150']

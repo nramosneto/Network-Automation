@@ -1,0 +1,79 @@
+---
+####################################################
+# This document configures switch Cisco L2 models
+# OWNER: Nivaldo Ramos Neto
+# Rev. 0
+# Last Changer:
+# Description:
+####################################################
+# HOSTNAME
+hostname: uk-dc-sw-dmz-01
+
+# CONFIGURE ACCESS PORTS
+interfaces:
+- switch_if: GigabitEthernet1/0/1
+  vlan_id: 641
+  desc: "UPLINK-ROUTER01"
+  enabled: true
+- switch_if: GigabitEthernet1/0/2
+  vlan_id: 642
+  desc: "UPLINK-ROUTER02"
+  enabled: true
+- switch_if: GigabitEthernet1/0/10
+  enabled: true
+  clearint: true
+- switch_if: vlan50
+  desc: MANAGEMENT
+  enabled: true
+
+# CONFIGURE TRUNK PORTS WITH OPTIONS
+- switch_if: GigabitEthernet1/0/11
+  allowedvlans: 20,50
+  nativevlan: 50
+  desc: "Trunk by Ansible"
+  enabled: false
+  clearint: true
+- switch_if: GigabitEthernet1/0/48
+  nativevlan: 500
+  desc: "UPLK-SW-ACC-BKP"
+  enabled: false
+
+# CONFIGURE TRUNK-ONLY PORTS (NO OPTIONS)
+- switch_if: GigabitEthernet1/0/3
+  trunk_only: trunk
+  desc: "UPK-FW1-100.64.250.9"
+  enabled: true
+- switch_if: GigabitEthernet1/0/4
+  trunk_only: trunk
+  desc: "UPK-FW1-100.64.250.13"
+  enabled: true
+- switch_if: GigabitEthernet1/0/5
+  trunk_only: trunk
+  desc: "UPK-FW2-100.64.250.9"
+  enabled: true
+- switch_if: GigabitEthernet1/0/6
+  trunk_only: trunk
+  desc: "UPK-FW2-100.64.250.13"
+  enabled: true
+
+#  Gi1/0/10: {description: Configured with jinja2, enabled: false}
+
+# CONFIGURE VLANS
+vlans:
+  - vlan_name: SERVERS
+    vlan_id: 20
+  - vlan_name: MGMT
+    vlan_id: 50
+  - vlan_name: UPSTREAM-1
+    vlan_id: 641
+  - vlan_name: UPSTREAM-2
+    vlan_id: 642
+  - vlan_name: MGMT-BKP
+    vlan_id: 500
+
+# CONFIGURE ROUTED INTERFACES
+routed_interfaces:
+  - l3interface: vlan500
+    ipv4_address: 10.64.50.10/24
+# OTHER OPTIONS
+#clearint: true

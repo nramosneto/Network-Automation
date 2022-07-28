@@ -1,0 +1,80 @@
+---
+####################################################
+# This document configures switch Cisco L2 models
+# OWNER: Nivaldo Ramos Neto
+# Rev. 0
+# Last Changer:
+# Description:
+####################################################
+# HOSTNAME
+hostname: uk-dc-sw-acc-01
+
+# CONFIGURE ACCESS PORTS
+interfaces:
+- switch_if: GigabitEthernet1/0/2
+  vlan_id: 50
+  desc: "MGMT-BROCADE-100.64.50.51"
+  enabled: true
+- switch_if: GigabitEthernet1/0/3
+  vlan_id: 50
+  desc: "MGMT-STORAGE-100.64.50.50"
+  enabled: true
+- switch_if: GigabitEthernet1/0/4
+  vlan_id: 50
+  desc: "MGMT-BROCADE-100.64.50.52"
+  enabled: true
+- switch_if: GigabitEthernet1/0/5
+  vlan_id: 50
+  desc: "IBMSIM02-EXTM-MGMT-100.64.50.54"
+  enabled: true
+
+# CONFIGURE TRUNK PORTS WITH OPTIONS
+- switch_if: GigabitEthernet1/0/7
+  nativevlan: 50
+  desc: "UNDEFINED"
+  enabled: false
+- switch_if: GigabitEthernet1/0/7
+  nativevlan: 50
+  desc: "UNDEFINED"
+  enabled: false
+
+# CONFIGURE TRUNK-ONLY PORTS (NO OPTIONS)
+- switch_if: GigabitEthernet1/0/1
+  trunk_only: trunk
+  desc: "UPLK-UK-DC-SW-DMZ-01"
+  enabled: true
+- switch_if: GigabitEthernet1/0/45
+  trunk_only: trunk
+  desc: "UPLK-TRUNK-FW02"
+  enabled: true
+- switch_if: GigabitEthernet1/0/46
+  trunk_only: trunk
+  desc: "UPLK-TRUNK-FW01"
+  enabled: true
+- switch_if: Po20
+  trunk_only: trunk
+  enabled: true
+- switch_if: Po10
+  trunk_only: trunk
+  enabled: true
+
+# CONFIGURE VLANS
+vlans:
+  - vlan_name: SERVER-DEV
+    vlan_id: 20
+  - vlan_name: SERVER-PROD
+    vlan_id: 21
+  - vlan_name: MGMT
+    vlan_id: 50
+  - vlan_name: MGMT-BKP
+    vlan_id: 500
+
+# CONFIGURE ROUTED INTERFACES
+
+# OTHER OPTIONS
+#clearint: true
+
+# CONFIGURE PORTCHANNEL
+portchannel:
+ Po10: { ports: ['Te1/1/1', 'TenGigabitEthernet1/1/2'], description: "**IBMSIM01 - PortChannel**", channelmode: active }
+ Po20: { ports: ['Te1/1/3', 'TenGigabitEthernet1/1/4'], description: "**IBMSIM02 - PortChannel**", channelmode: active }

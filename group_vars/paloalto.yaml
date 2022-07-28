@@ -1,0 +1,6 @@
+---
+ansible_python_interpreter: /usr/bin/python3
+ansible_connection: local
+palo_provider:
+  ip_address: "{{ ip_address }}"
+  api_key: "{{ api_key }}"

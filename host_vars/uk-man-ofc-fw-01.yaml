@@ -1,0 +1,393 @@
+---
+hostname: uk-man-ofc-fw-01
+ip_address: '10.80.90.1'
+#api_key: LUFRPT1lVG4wbGVEK2hua1JFNmxLdi8wK3IwVm9TVVU9Ri9zTENSZXRWakZ4MmRENVRPVXd4a1llTW1yNHIrT3dwMmx6N0RpWW1ZRUF1Wmp5WnUwSDc1MTM5K0RFOVdMUw==
+api_key: LUFRPT01ZUJUOGg4VFE2WHdsUjdzNk5QZStHUVFxY2M9Ri9zTENSZXRWakZ4MmRENVRPVXd4b2wvNzVROVgzYXk5eGRMQ1Zmdk4xdU1STUpNZnB2MGdGV21DUkxZQllJNQ==
+#----------------------This section configures Firewall Interface & Sub-Interfaces
+firewall_interfaces:
+- interface_name: 'ethernet1/1'
+  interface_mode: 'layer3'
+  interface_dhcp: 'false'
+  interface_state: 'present'
+
+- interface_name: 'ethernet1/3'
+  interface_mode: 'layer3'
+  interface_ip: '193.178.54.58/30'
+  interface_zone: 'Internet'
+  interface_vr: 'default'
+  interface_dhcp: 'false'
+  interface_state: 'present'
+
+- interface_name: 'ethernet1/4'
+  interface_mode: 'layer3'
+  interface_ip: '185.108.170.114/30'
+  interface_zone: 'Internet'
+  interface_vr: 'default'
+  interface_dhcp: 'false'
+  interface_state: 'present'
+
+#----------------------This section configures Firewall Loopback
+firewall_loopback:
+- loopback_int: 'loopback.50'
+  loopback_ip: '10.80.50.254/32'
+  loopback_zone: 'management'
+  loopback_vr: 'default'
+  loopback_comment: 'Management loop'
+  loopback_profile: 'default'
+  loopback_state: 'present'
+
+firewall_subinterfaces:
+- subinterface_name: 'ethernet1/1.10'
+  subinterface_tag: '10'
+  subinterface_ip: '10.80.11.254/23'
+  subinterface_dhcp: 'false'
+  subinterface_zone: 'lan'
+  subinterface_vr: 'default'
+  subinterface_state: 'present'
+
+- subinterface_name: 'ethernet1/1.12'
+  subinterface_tag: '12'
+  subinterface_ip: '10.80.13.254/23'
+  subinterface_dhcp: 'false'
+  subinterface_zone: 'wireless-corp'
+  subinterface_vr: 'default'
+  subinterface_state: 'present'
+
+- subinterface_name: 'ethernet1/1.15'
+  subinterface_tag: '15'
+  subinterface_ip: '10.80.15.14/28'
+  subinterface_dhcp: 'false'
+  subinterface_zone: 'printers'
+  subinterface_vr: 'default'
+  subinterface_state: 'present'
+
+- subinterface_name: 'ethernet1/1.16'
+  subinterface_tag: '16'
+  subinterface_ip: '10.80.15.62/27'
+  subinterface_dhcp: 'false'
+  subinterface_zone: 'meetings'
+  subinterface_vr: 'default'
+  subinterface_state: 'present'
+
+- subinterface_name: 'ethernet1/1.17'
+  subinterface_tag: '17'
+  subinterface_ip: '10.80.17.254/24'
+  subinterface_dhcp: 'false'
+  subinterface_zone: 'facility'
+  subinterface_vr: 'default'
+  subinterface_state: 'present'
+
+- subinterface_name: 'ethernet1/1.90'
+  subinterface_tag: '90'
+  subinterface_ip: '10.80.90.254/24'
+  subinterface_dhcp: 'false'
+  subint_profile: 'default'
+  subinterface_zone: 'management'
+  subinterface_vr: 'default'
+  subinterface_state: 'present'
+
+- subinterface_name: 'ethernet1/1.100'
+  subinterface_tag: '100'
+  subinterface_ip: '192.168.1.254/23'
+  subinterface_dhcp: 'false'
+  subinterface_zone: 'guest'
+  subinterface_vr: 'guest'
+  subinterface_state: 'present'
+
+#----------------------This section configures Firewall Zones
+#firewall_zones:
+#- zone_name: 'Outside'
+#  zone_mode: 'layer3'
+#  zone_state: 'present'
+
+
+#----------------------This section configures IPSEC VPN TUNNELS
+
+### TUNNELS
+ike_gateway:
+- ike_gateway_name: 'is-dc-mgtm-ike-gw-primary'
+  ike_gateway_version: 'ikev2'
+  ike_gateway_interface: 'ethernet1/3'
+  ike_gateway_localaddress_type: 'ip'
+  ike_gateway_localip: '193.178.54.58/30'
+  ike_gateway_passive: 'false'
+  ike_gateway_peer_ip: '185.107.60.254'
+  ike_gateway_liveness: '5'
+  ike_gateway_psk: '1Vv2`zmgR17{t<N<h2\?u@ohszi`?sss'
+  ike_gateway_crypto_profile: 'saltpay-default-ike'
+  ike_gateway_state: 'present'
+
+- ike_gateway_name: 'is-dc-mgtm-ike-gw-backup'
+  ike_gateway_version: 'ikev2'
+  ike_gateway_interface: 'ethernet1/4'
+  ike_gateway_localaddress_type: 'ip'
+  ike_gateway_localip: '185.108.170.114/30'
+  ike_gateway_passive: 'false'
+  ike_gateway_peer_ip: '185.107.60.254'
+  ike_gateway_liveness: '5'
+  ike_gateway_psk: '1Vv2`zmgR17{t<N<h2\?u@ohszi`?sss'
+  ike_gateway_crypto_profile: 'saltpay-default-ike'
+  ike_gateway_state: 'present'
+
+- ike_gateway_name: 'uk-dc-mgtm-ike-gw-primary'
+  ike_gateway_version: 'ikev2'
+  ike_gateway_interface: 'ethernet1/3'
+  ike_gateway_localaddress_type: 'ip'
+  ike_gateway_localip: '193.178.54.58/30'
+  ike_gateway_passive: 'false'
+  ike_gateway_peer_ip: '185.107.63.254'
+  ike_gateway_liveness: '5'
+  ike_gateway_psk: '1Vv2`zmgR17{t<N<h2\?u@ohszi`?sss'
+  ike_gateway_crypto_profile: 'saltpay-default-ike'
+  ike_gateway_state: 'present'
+
+- ike_gateway_name: 'uk-dc-mgtm-ike-gw-backup'
+  ike_gateway_version: 'ikev2'
+  ike_gateway_interface: 'ethernet1/4'
+  ike_gateway_localaddress_type: 'ip'
+  ike_gateway_localip: '185.108.170.114/30'
+  ike_gateway_passive: 'false'
+  ike_gateway_peer_ip: '185.107.63.254'
+  ike_gateway_liveness: '5'
+  ike_gateway_psk: '1Vv2`zmgR17{t<N<h2\?u@ohszi`?sss'
+  ike_gateway_crypto_profile: 'saltpay-default-ike'
+  ike_gateway_state: 'present'
+
+vpn_tunnel:
+- tunnel_name: 'tunnel.100'
+  tunnel_ip: '100.100.255.1/30'
+  tunnel_zone: 'global-dc'
+  tunnel_vr: 'default'
+  tunnel_state: 'present'
+
+- tunnel_name: 'tunnel.101'
+  tunnel_ip: '100.100.255.5/30'
+  tunnel_zone: 'global-dc'
+  tunnel_vr: 'default'
+  tunnel_state: 'present'
+
+- tunnel_name: 'tunnel.102'
+  tunnel_ip: '100.100.255.9/30'
+  tunnel_zone: 'global-dc'
+  tunnel_vr: 'default'
+  tunnel_state: 'present'
+
+- tunnel_name: 'tunnel.103'
+  tunnel_ip: '100.100.255.13/30'
+  tunnel_zone: 'global-dc'
+  tunnel_vr: 'default'
+  tunnel_state: 'present'
+
+
+ipsec_vpn:
+- ipsec_name: 'is-dc-mgmt-ipsec-primary'
+  tunnel_interface: 'tunnel.100'
+  ipsec_ike_gw: 'is-dc-mgtm-ike-gw-primary'
+  ipsec_profile: 'saltpay-default-ipsec'
+  ipsec_monitor: 'yes'
+  ipsec_monitor_dst: '100.100.255.2'
+  ipsec_monitor_profile: 'default'
+  ipsec_state: 'present'
+
+- ipsec_name: 'is-dc-mgmt-ipsec-backup'
+  tunnel_interface: 'tunnel.101'
+  ipsec_ike_gw: 'is-dc-mgtm-ike-gw-backup'
+  ipsec_profile: 'saltpay-default-ipsec'
+  ipsec_monitor: 'yes'
+  ipsec_monitor_dst: '100.100.255.6'
+  ipsec_monitor_profile: 'default'
+  ipsec_state: 'present'
+
+- ipsec_name: 'uk-dc-mgmt-ipsec-primary'
+  tunnel_interface: 'tunnel.102'
+  ipsec_ike_gw: 'uk-dc-mgtm-ike-gw-primary'
+  ipsec_profile: 'saltpay-default-ipsec'
+  ipsec_monitor: 'yes'
+  ipsec_monitor_dst: '100.100.255.10'
+  ipsec_monitor_profile: 'default'
+  ipsec_state: 'present'
+
+- ipsec_name: 'uk-dc-mgmt-ipsec-backup'
+  tunnel_interface: 'tunnel.103'
+  ipsec_ike_gw: 'uk-dc-mgtm-ike-gw-backup'
+  ipsec_profile: 'saltpay-default-ipsec'
+  ipsec_monitor: 'yes'
+  ipsec_monitor_dst: '100.100.255.14'
+  ipsec_monitor_profile: 'default'
+  ipsec_state: 'present'
+
+ipsec_proxy_id:
+- vpn_proxy: 'a'
+  ipsec_tunnel_name: 'is-dc-mgmt-ipsec-primary'
+  vpn_proxy_local: '0.0.0.0/0'
+  vpn_proxy_remote: '0.0.0.0/0'
+
+- vpn_proxy: 'a'
+  ipsec_tunnel_name: 'is-dc-mgmt-ipsec-backup'
+  vpn_proxy_local: '0.0.0.0/0'
+  vpn_proxy_remote: '0.0.0.0/0'
+
+- vpn_proxy: 'a'
+  ipsec_tunnel_name: 'uk-dc-mgmt-ipsec-primary'
+  vpn_proxy_local: '0.0.0.0/0'
+  vpn_proxy_remote: '0.0.0.0/0'
+
+- vpn_proxy: 'a'
+  ipsec_tunnel_name: 'uk-dc-mgmt-ipsec-backup'
+  vpn_proxy_local: '0.0.0.0/0'
+  vpn_proxy_remote: '0.0.0.0/0'
+
+
+#----------------------This section configures Firewall Static Routes
+firewall_static_routes:
+
+# TEMP DISABLED DUE PATH MONITOR MODULE IN ANSIBLE
+#- static_route_name: 'internet-1'
+#  static_route_destination: '0.0.0.0/0'
+#  static_route_nexthop_type: 'ip-address'
+#  static_route_nexthop_ip: '193.178.54.57'
+#  static_route_interface: 'ethernet1/3'
+#  static_route_vr: 'default'
+#  static_route_state: 'present'
+
+- static_route_name: 'internet-2'
+  static_route_destination: '0.0.0.0/0'
+  static_route_nexthop_type: 'ip-address'
+  static_route_nexthop_ip: '185.108.170.113'
+  static_route_interface: 'ethernet1/4'
+  static_route_vr: 'default'
+  static_route_metric: '20'
+  static_route_state: 'present'
+
+- static_route_name: 'is-datacenter-route-1'
+  static_route_destination: '172.17.0.0/22'
+  static_route_nexthop_type: 'none'
+  static_route_interface: 'tunnel.100'
+  static_route_vr: 'default'
+  static_route_metric: '10'
+  static_route_state: 'present'
+
+- static_route_name: 'is-datacenter-route-2'
+  static_route_destination: '172.17.0.0/22'
+  static_route_nexthop_type: 'none'
+  static_route_interface: 'tunnel.101'
+  static_route_vr: 'default'
+  static_route_metric: '20'
+  static_route_state: 'present'
+
+- static_route_name: 'uk-datacenter-route-1'
+  static_route_destination: '100.64.0.0/16'
+  static_route_nexthop_type: 'none'
+  static_route_interface: 'tunnel.102'
+  static_route_vr: 'default'
+  static_route_metric: '10'
+  static_route_state: 'present'
+
+- static_route_name: 'uk-datacenter-route-2'
+  static_route_destination: '100.64.0.0/16'
+  static_route_nexthop_type: 'none'
+  static_route_interface: 'tunnel.103'
+  static_route_vr: 'default'
+  static_route_metric: '20'
+  static_route_state: 'present'
+
+#----------------------This section configures Firewall OBJECTS
+firewall_objects:
+- object_name: 'VPN-GLOBAL-PROTECT'
+  object_address_type: 'ip-netmask'
+  object_address: '172.17.0.0/22'
+  object_description: 'Address range VPN Pool'
+  object_state: 'present'
+
+- object_name: 'uk-dc-server'
+  object_address_type: 'ip-netmask'
+  object_address: '100.64.20.0/24'
+  object_description: 'non-prod servers in UK'
+  object_state: 'present'
+
+- object_name: 'uk-dc-solarwinds'
+  object_address_type: 'ip-netmask'
+  object_address: '100.64.20.50'
+  object_description: 'Solarwinds Monitoring tool'
+  object_state: 'present'
+
+#----------------------This section configures Firewall OBJECT GROUPS
+#firewall_objects_groups:
+#- object_group_name: 'AWS-10.142.0.0-Group'
+#  object_group_address: ['AWS-Prefix-10.142.0.0-20','AWS-Prefix-10.142.16.0-20','AWS-Prefix-10.142.32.0-20']
+#  object_group_description: 'AWS 10.142.0.0 Group of objects'
+#  object_group_state: 'present'
+
+#----------------------This section configures Firewall Rules
+firewall_rules:
+- rule_name: 'is-management-rule'
+  rule_description: 'enable access to management'
+  source_zone: ['global-dc']
+  destination_zone: ['management']
+  source_ip: ['VPN-GLOBAL-PROTECT']
+  source_user: ['any']
+  destination_ip: ['any']
+  category_name: ['any']
+  application_name: ['any']
+  service_name: ['any']
+  log_start: 'false'
+  log_end: 'true'
+  rule_action: 'allow'
+  rule_state: 'present'
+
+- rule_name: 'uk-management-rule'
+  rule_description: 'enable access to management'
+  source_zone: ['global-dc']
+  destination_zone: ['any']
+  source_ip: ['uk-dc-server']
+  source_user: ['any']
+  destination_ip: ['any']
+  category_name: ['any']
+  application_name: ['any']
+  service_name: ['any']
+  log_start: 'false'
+  log_end: 'true'
+  rule_action: 'allow'
+  rule_state: 'present'
+
+- rule_name: 'internet-access-2'
+  rule_description: 'internet-access-to-users'
+  source_zone: ['lan','wireless-corp','meetings', 'guest','management']
+  destination_zone: ['Internet']
+  source_ip: ['any']
+  source_user: ['any']
+  destination_ip: ['any']
+  category_name: ['any']
+  application_name: ['any']
+  service_name: ['any']
+  log_start: 'false'
+  log_end: 'true'
+  rule_action: 'allow'
+  rule_state: 'present'
+
+#----------------------This section configures Firewall Source Nat Rules
+firewall_snat:
+
+- snat_name: 'internet-access-1'
+  snat_description: 'wan-int-access'
+  snat_src_zone: ['lan','wireless-corp','meetings', 'guest','management']
+  snat_dst_zone: 'Internet'
+  snat_to_interface: 'ethernet1/3'
+  snat_src_ip: 'any'
+  snat_dst_ip: 'any'
+  src_snat_type: 'dynamic-ip-and-port'
+  src_snat_interface: 'ethernet1/3'
+  src_snat_address_type: 'interface-address'
+  src_snat_int_ip: '193.178.54.58/30'
+
+- snat_name: 'internet-access-2'
+  snat_description: 'wan-int-access'
+  snat_src_zone: ['lan','wireless-corp','meetings', 'guest','management']
+  snat_dst_zone: 'Internet'
+  snat_to_interface: 'ethernet1/4'
+  snat_src_ip: 'any'
+  snat_dst_ip: 'any'
+  src_snat_type: 'dynamic-ip-and-port'
+  src_snat_interface: 'ethernet1/4'
+  src_snat_address_type: 'interface-address'
+  src_snat_int_ip: '185.108.170.114/30'
