@@ -1,3 +1,116 @@
 ################################################
-# HOSTS Files - Inventory
+#
+# SALTPAY DEVICES INVENTORY
+# MANAGED BY NETWORK ENGINEERING TEAM - 2022
+# REV 1.0
 ################################################
+
+#VENDOR ESPECIFIC
+
+[cisco:children]
+is-router-cisco-wan
+is-router-cisco-lan
+is-switch-cisco-dmz
+is-switch-cisco-lan
+uk-switch-cisco-dmz
+uk-switch-cisco-access
+
+[juniper:children]
+uk-router-juniper-wan
+
+[f5:children]
+
+[paloalto:children]
+uk-firewall-paloalto-dmz
+is-firewall-paloalto-dmz
+uk-man-ofc-firewall
+
+################################################
+## COMPANY
+[saltpay:children]
+datacenter
+office
+
+################################################
+#LOCATION
+
+[datacenter:children]
+iceland-dc
+london-dc
+
+[office:children]
+porto
+manchester
+
+################################################
+#ICELAND DC
+
+#ICELAND Device function
+
+[iceland-dc:children]
+is-router-cisco-wan
+is-router-cisco-lan
+is-switch-cisco-dmz
+is-switch-cisco-lan
+is-firewall-paloalto-dmz
+
+#ICELAND Device Group
+
+[is-router-cisco-wan]
+is-a30-dc-rt-int-01 ansible_host=185.107.60.242
+is-kal-dc-rt-int-01 ansible_host=185.107.60.243
+
+[is-router-cisco-lan]
+
+[is-switch-cisco-dmz]
+
+[is-switch-cisco-lan]
+
+[is-firewall-paloalto-dmz]
+is-kal-dc-fw-01 ansible_host=192.168.255.10
+
+################################################
+#LONDON DC
+
+#LONDON Device function
+
+[london-dc:children]
+uk-router-juniper-wan
+uk-switch-cisco-dmz
+uk-switch-cisco-access
+uk-firewall-paloalto-dmz
+
+#LONDON Device Group
+
+[uk-router-juniper-wan]
+uk-dc-rt-int-01 ansible_host=46.249.208.65
+uk-dc-rt-int-02 ansible_host=46.249.208.69
+
+[uk-switch-cisco-dmz]
+uk-dc-sw-dmz-01 ansible_host=100.64.50.10
+
+[uk-switch-cisco-access]
+uk-dc-sw-acc-01 ansible_host=100.64.50.11
+
+[uk-firewall-paloalto-dmz]
+uk-dc-fw-dmz-01 ansible_host=100.64.50.1
+
+################################################
+#PORTO OFFICE
+
+#PORTO Device function
+[porto:children]
+
+#PORTO Device Group
+
+#################################################
+#MANCHESTER OFFICE
+#MANCHESTER Device function
+[manchester:children]
+uk-man-ofc-firewall
+
+#MANCHESTER Device Group
+
+[uk-man-ofc-firewall]
+uk-man-ofc-fw-01 ansible_host=10.80.90.1
+uk-man-ofc-fw-02 ansible_host=192.168.1.2
